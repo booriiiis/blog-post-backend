@@ -3,6 +3,7 @@ const webpush = require("web-push");
 const bodyParser = require("body-parser");
 const cors = require("cors")
 const app = express();
+const path = require("path")
 app.use(cors())
 app.use(bodyParser.json());
 
@@ -55,6 +56,8 @@ const privateVapidKey = "3KzvKasA2SoCxsp0iIG_o9B0Ozvl1XDwI63JRKNIWBM";
 
 
 const arrayOfCards = []
+const connectedUsers = []
+
 
 let _id = 0;
 
@@ -103,15 +106,46 @@ app.post("/subscribe", (req, res) => {
   res.status(201).json({});
 
   // Create payload
-  const payload = JSON.stringify({
-    title: "Push Test"
-  });
 
-  // Pass object into sendNotification
+  const entry = connectedUsers.find(usr => usr.endpoint === subscription.endpoint)
+  if(!entry) {
+    connectedUsers.push(subscription)
+  }
+
+
+  const payload = JSON.stringify({
+    title: "Successfuly subscribtion"
+  });
   webpush
     .sendNotification(subscription, payload)
     .catch(err => console.error(err));
 });
+
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname + '/index.html'));
+});
+
+app.post("/sendnotif", (req, res) => {
+  console.log("BROADCASTING MSG", req.body)
+  connectedUsers.forEach(usr => {
+        webpush.sendNotification(usr, JSON.stringify(
+        
+        req.body
+
+        ))
+      })
+    res.json({ok: true})
+});
+
+// setInterval(() => {
+//   connectedUsers.forEach(usr => {
+//     webpush.sendNotification(usr, JSON.stringify(
+//       {
+//         title: 'Lol'
+//       }
+//     ))
+//   })
+// }, 3000);
 
 const port = 5000;
 
