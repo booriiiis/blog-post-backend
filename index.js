@@ -8,56 +8,11 @@ app.use(cors())
 app.use(bodyParser.json());
 
 const publicVapidKey =
-  "BJthRQ5myDgc7OSXzPCMftGw-n16F7zQBEN7EUD6XxcfTTvrLGWSIG7y_JxiWtVlCFua0S8MTB5rPziBqNx1qIo";
-const privateVapidKey = "3KzvKasA2SoCxsp0iIG_o9B0Ozvl1XDwI63JRKNIWBM";
-
-/*{
-    id: 1,
-    title: "Title1",
-    subtitle: "Subtitle1",
-    content: "Content1",
-    img: "no-img"
-  },
-  {
-    id: 2,
-    title: "Title2",
-    subtitle: "Subtitle1",
-    content: "Content1",
-    img: "no-img"
-  },
-  {
-    id: 3,
-    title: "Title3",
-    subtitle: "Subtitle1",
-    content: "Content1",
-    img: "no-img"
-  },
-  {
-    id: 4,
-    title: "Title4",
-    subtitle: "Subtitle1",
-    content: "Content1",
-    img: "no-img"
-  },
-  {
-    id: 5,
-    title: "Titl5",
-    subtitle: "Subtitle1",
-    content: "Content1",
-    img: "no-img"
-  },
-  {
-    id: 6,
-    title: "Title6",
-    subtitle: "Subtitle1",
-    content: "Content1",
-    img: "no-img"
-  } */
-
+  "BBmjWYs2Zppza9BRJ6u7JWxSx94MdBfZW5qZycSu7fQi27a_fguZ2JgRiCqJx4U81KNCHy42OD4vaF2DWRycufE";
+const privateVapidKey = "a9wImWhoMTxmfOKF16rWiJgyL_3vrKRumTTRpsZBA_0";
 
 const arrayOfCards = []
 const connectedUsers = []
-
 
 let _id = 0;
 
@@ -113,9 +68,12 @@ app.post("/subscribe", (req, res) => {
   }
 
 
-  const payload = JSON.stringify({
-    title: "Successfuly subscribtion"
-  });
+  // const payload = JSON.stringify({
+  //   title: "Successfuly test"
+  // });
+
+  const payload = req.body.payload;
+
   webpush
     .sendNotification(subscription, payload)
     .catch(err => console.error(err));
